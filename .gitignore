@@ -1,0 +1,10 @@
+node_modules/
+test-results/
+.vscode/
+index.html
+assets/
+features/
+@rerun.txt
+.DS_Store
+configurations.ts
+package-lock.json

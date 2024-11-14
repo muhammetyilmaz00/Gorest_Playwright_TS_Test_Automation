@@ -21,17 +21,8 @@ jobs:
 
       - name: Create/Update configuration file
         run: |
-          echo "File exists: [ -f configuration.ts ]"
-          if [ -f configuration.ts ]; then
-            echo "File exists, updating token"
-            grep -q "token:" configuration.ts && sed -i "s/token: .*;/token: '${{ secrets.token }}';/" configuration.ts || echo "export const configurations = { token: '${{ secrets.token }}' };" >> configuration.ts
-            cat configuration.ts
-          else
-            echo "File does not exist, creating it"
-            touch configuration.ts
-            echo "export const configurations = { token: '${{ secrets.token }}' };" >> configuration.ts
-            cat configuration.ts
-          fi
+            touch configurations.ts
+            echo "export const configurations = { token: '${{ secrets.TOKEN }}' };" >> configurations.ts
 
       - name: Run Playwright tests
         run: npm run test:ci
