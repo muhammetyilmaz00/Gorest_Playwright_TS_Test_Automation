@@ -1,0 +1,43 @@
+name: Playwright Tests
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm i
+
+      - name: Create/Update configuration file
+        run: |
+          echo "File exists: [ -f configuration.ts ]"
+          if [ -f configuration.ts ]; then
+            echo "File exists, updating token"
+            grep -q "token:" configuration.ts && sed -i "s/token: .*;/token: '${{ secrets.token }}';/" configuration.ts || echo "export const configurations = { token: '${{ secrets.token }}' };" >> configuration.ts
+            cat configuration.ts
+          else
+            echo "File does not exist, creating it"
+            touch configuration.ts
+            echo "export const configurations = { token: '${{ secrets.token }}' };" >> configuration.ts
+            cat configuration.ts
+          fi
+
+      - name: Run Playwright tests
+        run: npm run test:ci
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: playwright-report
+          path: test-results/
+          retention-days: 30
