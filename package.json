@@ -1,0 +1,23 @@
+{
+  "name": "quatt",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx cucumber-js || true",
+    "posttest": "npx ts-node support/report.ts",
+    "test:ci": "npx cucumber-js -p ci && npm run posttest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "@cucumber/cucumber": "^10.8.0",
+    "@playwright/test": "^1.45.3",
+    "@types/node": "^22.0.0",
+    "multiple-cucumber-html-reporter": "^3.7.0",
+    "playwright": "^1.45.3",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}
